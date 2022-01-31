@@ -13,16 +13,21 @@ public class MainUIHandler : MonoBehaviour
         string GetName();
 
         string GetData();
+
+        void GetContent(ref List<Building.InventoryEntry> content);
     }
 
     public InfoPopup InfoPopup;
+    public ResourceDatabase ResourceDB;
 
     protected IUIInfoContent m_CurrentContent;
+    protected List<Building.InventoryEntry> m_ContentBuffer = new List<Building.InventoryEntry>();
 
     private void Awake()
     {
         Instance = this;
         InfoPopup.gameObject.SetActive(false);
+        ResourceDB.Init();
     }
 
     private void OnDestroy()
@@ -40,6 +45,18 @@ public class MainUIHandler : MonoBehaviour
         InfoPopup.Data.text = m_CurrentContent.GetData();
 
         InfoPopup.ClearContent();
+        m_ContentBuffer.Clear();
+
+        m_CurrentContent.GetContent(ref m_ContentBuffer);
+        foreach (var entry in m_ContentBuffer)
+        {
+            Sprite icon = null;
+            if (ResourceDB != null)
+                icon = ResourceDB.GetItem(entry.ResourceId)?.Icon;
+            
+
+            InfoPopup.AddToContent(entry.Count, icon);
+        }
        
     }
 

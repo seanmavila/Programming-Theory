@@ -35,7 +35,16 @@ public class UserControl : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            m_Selected.GoTo(hit.point);
+            var building = hit.collider.GetComponentInParent<Building>();
+            if (building != null)
+            {
+                m_Selected.GoTo(building);
+            }
+            else
+            {
+                m_Selected.GoTo(hit.point);
+            }
+
         }
     }
 

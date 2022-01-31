@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CubeUnit : Unit
 {
+    protected override void BuildingInRange()
+    {
+        throw new System.NotImplementedException();
+    }
     public override void GoTo(Vector3 position)
     {
         base.GoTo(position);

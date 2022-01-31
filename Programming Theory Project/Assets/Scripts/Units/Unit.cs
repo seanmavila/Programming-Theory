@@ -10,9 +10,9 @@ public abstract class Unit : MonoBehaviour, MainUIHandler.IUIInfoContent
 {
 
     public float speed = 3;
-    public float jumpForce = 10;
 
     protected NavMeshAgent m_Agent;
+    protected Building m_Target;
 
     protected void Awake()
     {
@@ -22,11 +22,38 @@ public abstract class Unit : MonoBehaviour, MainUIHandler.IUIInfoContent
         m_Agent.angularSpeed = 999;
     }
 
+    private void Update()
+    {
+        if (m_Target != null)
+        {
+            float distance = Vector3.Distance(m_Target.transform.position, transform.position);
+            if(distance < 2.0f)
+            {
+                m_Agent.isStopped = true;
+                BuildingInRange();
+            }
+        }
+    }
+
+    public virtual void GoTo(Building target)
+    {
+        m_Target = target;
+
+        if(m_Target != null)
+        {
+            m_Agent.SetDestination(m_Target.transform.position);
+            m_Agent.isStopped = false;
+        }
+    }
+
     public virtual void GoTo(Vector3 position)
     {
+        m_Target = null;
         m_Agent.SetDestination(position);
         m_Agent.isStopped = false;
     }
+
+    protected abstract void BuildingInRange();
 
     public virtual string GetName()
     {
@@ -36,5 +63,10 @@ public abstract class Unit : MonoBehaviour, MainUIHandler.IUIInfoContent
     public virtual string GetData()
     {
         return "";
+    }
+
+    public virtual void GetContent(ref List<Building.InventoryEntry> content)
+    {
+
     }
 }
