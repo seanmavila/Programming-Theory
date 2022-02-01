@@ -49,7 +49,7 @@ public class SphereUnit : Unit
 
     public override string GetData()
     {
-        return "Does sphere things";
+        return $"Multiplies production speed by {productivityMultiplier} second(s)";
     }
 }
 
