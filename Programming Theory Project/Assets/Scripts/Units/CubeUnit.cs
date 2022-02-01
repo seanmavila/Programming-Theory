@@ -25,7 +25,7 @@ public class CubeUnit : Unit
     {
         if (m_CurrentPile != null)
         {
-            m_CurrentPile.productionSpeed /= productivityMultiplier;
+            m_CurrentPile.productionSpeed *= productivityMultiplier;
             m_CurrentPile = null;
         }
     }
